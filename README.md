@@ -8,4 +8,4 @@ RedHat OpenStack 16.1 (Train) Template.
  - Repository is Offline. But you need to the redhat account.
  (Because repo vm configuration and Container Downloading though Internet.)
  - Glance Images, Volume, Volume-back use the NFS. (NFS-Server running in RHEL8.2 Repo VM.)
- - 
+ - Single Stack
