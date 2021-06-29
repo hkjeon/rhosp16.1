@@ -1,0 +1,5 @@
+resource_registry:
+  OS::TripleO::Services::CephMgr: OS::Heat::None
+  OS::TripleO::Services::CephMon: OS::Heat::None
+  OS::TripleO::Services::CephOSD: OS::Heat::None
+  OS::TripleO::Services::CephClient: OS::Heat::None

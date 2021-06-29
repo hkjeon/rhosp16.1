@@ -1,0 +1,120 @@
+heat_template_version: rocky
+description: >
+  Extra hostname configuration
+resources:
+  userdata:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+      - config: {get_resource: nameserver_config}
+  nameserver_config:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config: |
+        #!/bin/bash
+        cat > /etc/yum.repos.d/rhosp16.repo << EOF
+        [rhel-8-for-x86_64-baseos-rpms]
+        name=rhel-8-for-x86_64-baseos-rpms
+        baseurl=http://60.30.157.253/rhel-8-for-x86_64-baseos-rpms
+        enabled=1
+        gpgcheck=0
+
+        [rhel-8-for-x86_64-appstream-rpms]
+        name=rhel-8-for-x86_64-appstream-rpms
+        baseurl=http://60.30.157.253/rhel-8-for-x86_64-appstream-rpms
+        enabled=1
+        gpgcheck=0
+
+        [rhel-8-for-x86_64-highavailability-rpms]
+        name=rhel-8-for-x86_64-highavailability-rpms
+        baseurl=http://60.30.157.253/rhel-8-for-x86_64-highavailability-rpms
+        enabled=1
+        gpgcheck=0
+
+        [ansible-2.9-for-rhel-8-x86_64-rpms]
+        name=ansible-2.9-for-rhel-8-x86_64-rpms
+        baseurl=http://60.30.157.253/ansible-2.9-for-rhel-8-x86_64-rpms
+        enabled=1
+        gpgcheck=0
+
+        [satellite-tools-6.5-for-rhel-8-x86_64-rpms]
+        name=satellite-tools-6.5-for-rhel-8-x86_64-rpms
+        baseurl=http://60.30.157.253/satellite-tools-6.5-for-rhel-8-x86_64-rpms
+        enabled=1
+        gpgcheck=0
+
+        [openstack-16.1-for-rhel-8-x86_64-rpms]
+        name=openstack-16.1-for-rhel-8-x86_64-rpms
+        baseurl=http://60.30.157.253/openstack-16.1-for-rhel-8-x86_64-rpms
+        enabled=1
+        gpgcheck=0
+
+        [fast-datapath-for-rhel-8-x86_64-rpms]
+        name=fast-datapath-for-rhel-8-x86_64-rpms
+        baseurl=http://60.30.157.253/fast-datapath-for-rhel-8-x86_64-rpms
+        enabled=1
+        gpgcheck=0
+        EOF
+
+        echo 'skt!234' | passwd --stdin root
+        dnf install -y sysstat vim bash-completion tcpdump
+
+        # ZAP Disk : /dev/sdb nova instance data partition
+        if [[ "$(hostname)" =~ "comp" ]]; then
+          echo "Number of disks detected: $(lsblk -no NAME,TYPE,MOUNTPOINT | grep "disk" | awk '{print $1}' | wc -l)"
+          for DEVICE in `lsblk -no NAME,TYPE,MOUNTPOINT | grep "disk" | awk '{print $1}'`
+          do
+            ROOTFOUND=0
+            echo "Checking /dev/${DEVICE}..."
+            echo "Number of partitions on /dev/${DEVICE}: $(expr $(lsblk -n /dev/${DEVICE} | awk '{print $7}' | wc -l) - 1)"
+            for MOUNTS in `lsblk -n /dev/${DEVICE} | awk '{print $7}'`
+            do
+              if [[ "$MOUNTS" = "/" ]]
+              then
+                ROOTFOUND=1
+              fi
+            done
+            if [[ $ROOTFOUND = 0 ]]
+            then
+              echo "Root not found in /dev/${DEVICE}"
+              echo "Wiping disk /dev/${DEVICE}"
+              sgdisk -Z /dev/${DEVICE}
+              sgdisk -g /dev/${DEVICE}
+            else
+              echo "Root found in /dev/${DEVICE}"
+            fi
+          done
+        fi
+
+        if [[ "$(hostname)" =~ "comp" ]]; then
+        # LVM parted (TB)
+                 parted -s /dev/sdb mklabel gpt
+                 parted -s /dev/sdb mkpart primary 0 100%
+                 pvcreate /dev/sdb1
+                 vgcreate vg-compute /dev/sdb1
+                 lvcreate -y -l 100%FREE -n hostvolume vg-compute
+                 mkfs.xfs -L hostvolume /dev/vg-compute/hostvolume
+                 echo "/dev/vg-compute/hostvolume /var/lib/nova/instances xfs defaults,_netdev 0 0" >> /etc/fstab
+                 mount -a
+                 chown -R nova:nova /var/lib/nova/instances
+                 restorecon -RF /var/lib/nova/instances
+
+        # Standard parted (sang yong)
+        #        pvcreate /dev/sdb
+        #        vgcreate vg-compute /dev/sdb
+        #        lvcreate -l 100%FREE -n hostvolume vg-compute
+        #        mkfs.xfs -L hostvolume /dev/vg-compute/hostvolume
+        #        echo "/dev/vg-compute/hostvolume /var/lib/nova/instances xfs defaults,_netdev 0 0" >> /etc/fstab
+        #        mount -a
+        #        chown -R nova:nova /var/lib/nova/instances
+        #        restorecon -RF /var/lib/nova/instances
+        #
+        #        # curl ftp://192.168.0.1/make_sriov.sh -o /etc/make_sriov.sh
+        #        # restorecon -RF /etc/make_sriov.sh
+        #        # chmod +x /etc/make_sriov.sh /etc/rc.d/rc.local
+        #        # echo "/bin/sh /etc/make_sriov.sh" >> /etc/rc.d/rc.local
+        fi
+
+outputs:
+  OS::stack_id:
+    value: {get_resource: userdata}

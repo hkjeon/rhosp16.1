@@ -1,0 +1,16 @@
+parameter_defaults:
+  NovaSchedulerDefaultFilters: 
+    - RetryFilter
+    - AvailabilityZoneFilter
+    - ComputeFilter
+    - ImagePropertiesFilter
+    - ServerGroupAntiAffinityFilter
+    - ServerGroupAffinityFilter
+    - ComputeCapabilitiesFilter
+    - PciPassthroughFilter
+    - NUMATopologyFilter
+    - AggregateInstanceExtraSpecsFilter
+
+  NovaSchedulerAvailableFilters: ["nova.scheduler.filters.all_filters","nova.scheduler.filters.pci_passthrough_filter.PciPassthroughFilter"]
+
+  NovaComputeLibvirtType: 'qemu' ## if compute node is vm

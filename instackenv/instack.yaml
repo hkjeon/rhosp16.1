@@ -1,0 +1,36 @@
+nodes:
+  - "name": "hk-osc-1"
+    "pm_addr": "60.30.157.4"
+    "mac": ["52:54:00:aa:8c:5a"]
+    "pm_type": "ipmi"
+    "pm_user": "admin"
+    "pm_password": "hpinvent"
+    "pm_port": "6451"
+    "capabilities": "node:controller-0,boot_option:local"
+    "root_device": {
+       "name":"/dev/vda"
+        }
+
+  - "name": "hk-osc-2"
+    "pm_addr": "60.30.157.4"
+    "mac": ["52:54:00:de:24:a1"]
+    "pm_type": "ipmi"
+    "pm_user": "admin"
+    "pm_password": "hpinvent"
+    "pm_port": "6452"
+    "capabilities": "node:controller-1,boot_option:local"
+    "root_device": {
+       "name":"/dev/vda"
+        }
+
+  - "name": "hk-osc-3"
+    "pm_addr": "60.30.157.4"
+    "mac": ["52:54:00:b8:d3:2b"]
+    "pm_type": "ipmi"
+    "pm_user": "admin"
+    "pm_password": "hpinvent"
+    "pm_port": "6453"
+    "capabilities": "node:controller-2,boot_option:local"
+    "root_device": {
+       "name":"/dev/vda"
+        }

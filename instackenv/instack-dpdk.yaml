@@ -1,0 +1,12 @@
+nodes:
+  - "name": "hk-dpdk-1"
+    "pm_addr": "60.30.157.4"
+    "mac": ["52:54:00:ce:c2:5f"]
+    "pm_type": "ipmi"
+    "pm_user": "admin"
+    "pm_password": "hpinvent"
+    "pm_port": "6461"
+    "capabilities": "node:compute-dpdk-0,boot_option:local"
+    "root_device": {
+       "name":"/dev/vda"
+        }

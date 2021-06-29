@@ -1,0 +1,5 @@
+parameter_defaults:
+  ExtraConfig:
+    #nova::compute::force_raw_images: true
+    horizon::cinder_options: { enable_backup: true }
+

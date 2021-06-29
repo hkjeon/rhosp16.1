@@ -1,0 +1,99 @@
+resource_registry:
+  OS::TripleO::Services::ComputeNeutronOvsDpdk:  /usr/share/openstack-tripleo-heat-templates/deployment/neutron/neutron-ovs-dpdk-agent-container-puppet.yaml
+  OS::TripleO::Services::NeutronSriovAgent:      /usr/share/openstack-tripleo-heat-templates/deployment/neutron/neutron-sriov-agent-container-puppet.yaml
+  OS::TripleO::Services::NeutronSriovHostConfig: /usr/share/openstack-tripleo-heat-templates/deployment/deprecated/neutron/neutron-sriov-host-config.yaml
+
+parameter_defaults:
+  ComputeDpdkParameters:
+    # GRUB Kernel CLI
+    KernelArgs: "default_hugepagesz=1GB hugepagesz=1G hugepages=30 intel_iommu=on intel_iommu=pt vfio_iommu_type1.allow_unsafe_interrupts=1 nmi_watchdog=0 transparent_hugepage=never intel_idle.max_cstate=0 processor.max_cstate=1 idle=mwait nohpet nosoftlockup isolcpus=1-9,11-19"
+
+    # Tuned profile
+    TunedProfileName: "cpu-partitioning"
+
+    # Isolated pCPU from Kernel, NMI, IRQ, and userland
+    IsolCpusList: "2-9,12-19"
+
+    # Nova pCPU to be used by the vCPU
+    NovaVcpuPinSet: ['2-9,12-19']
+
+    # OVS housekeeper cores
+    OvsDpdkCoreList: "1,11"
+
+    # CPU Share for the QEMU Emulator Threads
+    NovaComputeCpuSharedSet: "0,10"
+
+    # OVS-DPDK PMD Threads pCPU
+    OvsPmdCoreList: "1,11"
+
+    # Reserved memory for the hypervisor   
+    NovaReservedHostMemory: 4096
+
+    # OVS-DPDK DPC config (DPC1 here)
+    OvsDpdkMemoryChannels: "4"
+
+    # OVS-DPDK Memory size for NUMA node    
+    OvsDpdkSocketMemory: "1024,1024"
+#    OvsDpdkSocketMemory: "4096,4096"
+
+    NovaLibvirtRxQueueSize: 1024
+    NovaLibvirtTxQueueSize: 1024
+    
+    # VHU Socket Group
+    VhostuserSocketGroup: "hugetlbfs"
+    
+    NeutronBridgeMappings:
+    - physnet-az1-bare-dpdk:br-dpdkbond0
+    
+    ExtraSysctlSettings:
+      net.netfilter.nf_conntrack_max:
+        value: 1000000
+      net.nf_conntrack_max:
+        value: 1000000
+      net.ipv6.conf.all.disable_ipv6:
+        value: 1
+      kernel.sysrq:
+        value: 1
+   
+    # Neutron Physical mapping between a custom name and physical devices
+    NeutronPhysicalDevMappings:
+        - physnet-az1-sriov1:p7p1
+        - physnet-az1-sriov2:p7p2
+    # Mapping of SR-IOV PF interface to neutron physical_network.
+    NovaPCIPassthrough:
+      - devname: "p7p1"
+        physical_network: "physnet-az1-sriov1"
+      - devname: "p7p2"
+        physical_network: "physnet-az1-sriov2"
+      - vendor_id: "8086"
+        product_id: "158b"
+        address: "0000:86:00.0"
+      - vendor_id: "8086"
+        product_id: "158b"
+        address: "0000:86:00.1"
+     
+  # ------------------------------------------------------- #
+  # **** ComputeDpdk Extraconfig ****
+  # ------------------------------------------------------- #
+  # ComputeDpdk Leaf0 ExtraConfig
+  # ------------------------------------------------------- #
+  ComputeDpdkExtraConfig:
+    neutron::agents::ml2::ovs::enable_security_group: true
+    neutron::plugins::ml2::enable_security_group: true
+    nova::compute::allow_resize_to_same_host: true
+    nova::compute::force_config_drive: true
+    nova::compute::resume_guests_state_on_host_boot: true
+    nova::compute::libvirt::libvirt_inject_password: true
+    nova::compute::libvirt::libvirt_inject_key: true
+    nova::compute::libvirt::libvirt_inject_partition: -1
+    nova::compute::libvirt::vncserver_listen: "%{hiera('internal_api')}"
+    nova::compute::vncserver_proxyclient_address: "%{hiera('internal_api')}"
+    cold_migration_ssh_inbound_addr: "%{hiera('internal_api')}"
+    live_migration_ssh_inbound_addr: "%{hiera('internal_api')}"
+    nova::migration::libvirt::live_migration_inbound_addr: "%{hiera('internal_api')}"
+    nova::my_ip: "%{hiera('internal_api')}"
+    tripleo::profile::base::database::mysql::client::mysql_client_bind_address: "%{hiera('internal_api')}"
+    # ---- Add availability zone Neutron ---- #
+    neutron::agents::dhcp::availability_zone: AZ-0-COMP-OVS
+    # ---- Add availability zone Neutron ---- #
+    # ------------------------------------------------------- # 

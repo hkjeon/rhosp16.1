@@ -1,0 +1,91 @@
+resource_registry:
+  # NIC Configuration files for all the roles
+  OS::TripleO::Controller::Net::SoftwareConfig:             /home/stack/templates/nic-configs/controller.yaml
+  OS::TripleO::ComputeOvs::Net::SoftwareConfig:             /home/stack/templates/nic-configs/compute-ovs.yaml
+  OS::TripleO::ComputeDpdk::Net::SoftwareConfig:            /home/stack/templates/nic-configs/compute-dpdk.yaml
+
+  # VIP Ports
+  OS::TripleO::Network::Ports::ExternalVipPort:             /usr/share/openstack-tripleo-heat-templates/network/ports/external.yaml
+  OS::TripleO::Network::Ports::InternalApiVipPort:          /usr/share/openstack-tripleo-heat-templates/network/ports/internal_api.yaml
+  OS::TripleO::Network::Ports::RedisVipPort:                /usr/share/openstack-tripleo-heat-templates/network/ports/vip.yaml
+
+  # IP for Controller
+  OS::TripleO::Controller::Ports::ExternalPort:             /usr/share/openstack-tripleo-heat-templates/network/ports/external_from_pool.yaml
+  OS::TripleO::Controller::Ports::InternalApiPort:          /usr/share/openstack-tripleo-heat-templates/network/ports/internal_api_from_pool.yaml
+
+  # IP for Compute-Ovs
+  OS::TripleO::ComputeOvs::Ports::InternalApiPort:          /usr/share/openstack-tripleo-heat-templates/network/ports/internal_api_from_pool.yaml
+
+  # IP for Compute-Dpdk
+  OS::TripleO::ComputeDpdk::Ports::InternalApiPort:          /usr/share/openstack-tripleo-heat-templates/network/ports/internal_api_from_pool.yaml
+
+
+
+parameter_defaults:
+  # VIP Address
+  ControlFixedIPs:            [{'ip_address':'60.30.157.180'}]
+  PublicVirtualFixedIPs:      [{'ip_address':'60.30.152.180'}]
+  InternalApiVirtualFixedIPs: [{'ip_address':'60.30.155.180'}]
+  RedisVirtualFixedIPs:       [{'ip_address':'60.30.155.179'}]
+#-----------------------------------------------------------------------------------#
+  ControlPlaneSubnet: AZ-0-OSC-CP0
+  ControllerControlPlaneSubnet: AZ-0-OSC-CP0
+  ComputeOvsControlPlaneSubnet: AZ-0-OSC-CP0
+  ComputeDpdkControlPlaneSubnet: AZ-0-OSC-CP0
+#-----------------------------------------------------------------------------------#
+  # Add in configuration for the Control Plane
+  ControlPlaneSubnetCidr: "24"
+  ControlPlaneDefaultRoute: 60.30.157.1
+  AZ-0-OSC-CP0EC2MetadataIp: 60.30.157.170
+#-----------------------------------------------------------------------------------#
+  # Public Endpoint
+  ExternalNetCidr: 60.30.152.0/24
+  ExternalAllocationPools: [{'start': '60.30.152.181', 'end': '60.30.152.189'}]
+  ExternalNetworkVlanID: 202
+  #ExternalInterfaceDefaultRoute: 60.30.152.1
+#-----------------------------------------------------------------------------------#
+  # admin, internal Endpoint
+  InternalApiNetCidr: 60.30.155.0/24
+  InternalApiAllocationPools: [{'start': '60.30.155.181', 'end': '60.30.155.189'}]
+  InternalApiNetworkVlanID: 205
+#-----------------------------------------------------------------------------------#
+  # To refresh the overcloud nodes network configuration at every Overcloud Update
+  # ControllerNetworkDeploymentActions: ['CREATE','UPDATE']
+  # ComputeOvsNetworkDeploymentActions: ['CREATE','UPDATE']
+  # ComputeDpdkNetworkDeploymentActions: ['CREATE','UPDATE']
+#-----------------------------------------------------------------------------------#
+  # Static IP for Controller
+  ControllerIPs:
+    ctlplane:
+    - 60.30.157.181
+    - 60.30.157.182
+    - 60.30.157.183
+    external:
+    - 60.30.152.181
+    - 60.30.152.182
+    - 60.30.152.183
+    internal_api:
+    - 60.30.155.181
+    - 60.30.155.182
+    - 60.30.155.183
+
+  # Static IP for ComputeOvs 
+  ComputeOvsIPs:
+    ctlplane:
+    - 60.30.157.185
+    - 60.30.157.186
+    - 60.30.157.187
+    internal_api:
+    - 60.30.155.185
+    - 60.30.155.186
+    - 60.30.155.187
+
+  # Static IP for ComputeDpdk 
+  ComputeDpdkIPs:
+    ctlplane:
+    - 60.30.157.188
+    internal_api:
+    - 60.30.155.188
+
+
+

@@ -1,0 +1,41 @@
+parameter_defaults:
+  EnableFencing: true
+  FencingConfig:
+    devices:
+    # ------------------------------------------------------- #
+    # Controller #1 Stonigh Fencing
+    # ------------------------------------------------------- #
+    - agent: fence_ipmilan
+      host_mac: "52:54:00:aa:8c:5a"
+      params:
+        login: admin
+        passwd: hpinvent
+        ipaddr: 60.30.157.4
+        ipport: 6451
+        lanplus: true
+        pcmk_host_list: hk-osc-1
+    # ------------------------------------------------------- #
+    # Controller #2 Stonigh Fencing
+    # ------------------------------------------------------- #
+    - agent: fence_ipmilan
+      host_mac: "52:54:00:de:24:a1"
+      params:
+        login: admin
+        passwd: hpinvent
+        ipaddr: 60.30.157.4
+        ipport: 6452
+        lanplus: true
+        pcmk_host_list: hk-osc-2
+    # ------------------------------------------------------- #
+    # Controller #3 Stonigh Fencing
+    # ------------------------------------------------------- #
+    - agent: fence_ipmilan
+      host_mac: "52:54:00:b8:d3:2b"
+      params:
+        login: admin
+        passwd: hpinvent
+        ipaddr: 60.30.157.4
+        ipport: 6453
+        lanplus: true
+        pcmk_host_list: hk-osc-3
+    # ------------------------------------------------------- #

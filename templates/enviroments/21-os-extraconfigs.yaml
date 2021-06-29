@@ -1,0 +1,88 @@
+resource_registry:
+  # FirstBoot Script for initial configuration (i.e. Disk Wipe, Root Password, SSH Root Access)
+  OS::TripleO::NodeUserData:                        ../firstboot/first-boot.yaml
+  
+  # tuned Script for Openstack Nodes
+  #  OS::TripleO::NodeExtraConfigPost: ../extraconfig/31-tuned.yaml
+
+parameter_defaults:
+  # ------------------------------------------------------- #
+  # !!! Warning !!! Node Replacement and Reuse Option
+  # ------------------------------------------------------- #
+  # ControllerRemovalPolicies: []
+  # ControllerRemovalPoliciesMode: update
+  # ComputeOvsRemovalPolicies: []
+  # ComputeOvsRemovalPoliciesMode: update
+  # ComputeDpdkRemovalPolicies: []
+  # ComputeDpdkRemovalPoliciesMode: update
+  # ------------------------------------------------------- #
+  ControllerExtraConfig:
+    nova::ram_allocation_ratio: 1.0
+    nova::api::allow_resize_to_same_host: true
+    nova::disk_allocation_ratio: 1.0
+    nova::cpu_allocation_ratio: 1.0
+    glance::api::limit_param_default: 100
+    nova::pci::aliases:
+      - name: "pcipt25g01"
+        device_type: "type-PF"
+        vendor_id: "8086"
+        product_id: "158b"
+  # ------------------------------------------------------- #
+    neutron::agents::ml2::ovs::enable_security_group: true
+    neutron::plugins::ml2::enable_security_group: true
+    neutron::plugins::ml2::path_mtu: 1500
+  # ------------------------------------------------------- #
+    neutron::server::network_scheduler_driver: neutron.scheduler.dhcp_agent_scheduler.AZAwareWeightScheduler
+    neutron::server::router_scheduler_driver: neutron.scheduler.l3_agent_scheduler.AZLeastRoutersScheduler
+    neutron::server::dhcp_load_type: networks
+  # ------------------------------------------------------- #
+    neutron::server::default_availability_zones:
+      - 'AZ-0-COMP-OVS'
+      - 'AZ-1-COMP'
+  # ------------------------------------------------------- #
+  # Keystone token expiration set at 10 hours
+  TokenExpiration: 36000
+  # ------------------------------------------------------- #
+
+  ComputeOvsParameters:
+    NeutronBridgeMappings:
+      - physnet:br-ex
+      - physnet-az0-ovs-svc0:br-service0
+    ExtraSysctlSettings:
+      net.netfilter.nf_conntrack_max:
+        value: 1000000
+      net.nf_conntrack_max:
+        value: 1000000
+      net.ipv6.conf.all.disable_ipv6:
+        value: 1
+      kernel.sysrq:
+        value: 1
+  # ------------------------------------------------------- #
+  # **** ComputeOvsApp Extraconfig ****
+  # ------------------------------------------------------- #
+  # ComputeOvsApp Leaf0 ExtraConfig
+  # ------------------------------------------------------- #
+  ComputeOvsExtraConfig:
+    neutron::plugins::ml2::path_mtu: 1500
+    neutron::plugins::ml2::physical_network_mtus: ['physnet-az0-ovs-svc0:1500']
+    neutron::plugins::ml2::network_vlan_ranges: ['physnet-az0-ovs-svc0']
+    neutron::agents::ml2::ovs::enable_security_group: true
+    neutron::plugins::ml2::enable_security_group: true
+    nova::compute::allow_resize_to_same_host: true
+    nova::compute::force_config_drive: true
+    nova::compute::resume_guests_state_on_host_boot: true
+    nova::compute::libvirt::libvirt_inject_password: true
+    nova::compute::libvirt::libvirt_inject_key: true
+    nova::compute::libvirt::libvirt_inject_partition: -1
+    nova::compute::libvirt::vncserver_listen: "%{hiera('internal_api')}"
+    nova::compute::vncserver_proxyclient_address: "%{hiera('internal_api')}"
+    cold_migration_ssh_inbound_addr: "%{hiera('internal_api')}"
+    live_migration_ssh_inbound_addr: "%{hiera('internal_api')}"
+    nova::migration::libvirt::live_migration_inbound_addr: "%{hiera('internal_api')}"
+    nova::my_ip: "%{hiera('internal_api')}"
+    tripleo::profile::base::database::mysql::client::mysql_client_bind_address: "%{hiera('internal_api')}"
+    # ---- Add availability zone Neutron ---- #
+    neutron::agents::dhcp::availability_zone: AZ-0-COMP-OVS
+    # ---- Add availability zone Neutron ---- #
+    # ------------------------------------------------------- #
+

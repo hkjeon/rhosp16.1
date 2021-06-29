@@ -1,0 +1,74 @@
+resource_registry:
+  OS::TripleO::Services::ComputeNeutronOvsDpdk:  /usr/share/openstack-tripleo-heat-templates/deployment/neutron/neutron-ovs-dpdk-agent-container-puppet.yaml
+  OS::TripleO::Services::NeutronSriovAgent:      /usr/share/openstack-tripleo-heat-templates/deployment/neutron/neutron-sriov-agent-container-puppet.yaml
+  OS::TripleO::Services::NeutronSriovHostConfig: /usr/share/openstack-tripleo-heat-templates/deployment/deprecated/neutron/neutron-sriov-host-config.yaml
+
+parameter_defaults:
+  ComputeBareDpdkParameters:
+    # GRUB Kernel CLI
+    KernelArgs: "default_hugepagesz=1GB hugepagesz=1G hugepages=150 intel_iommu=on intel_iommu=pt vfio_iommu_type1.allow_unsafe_interrupts=1 nmi_watchdog=0 transparent_hugepage=never intel_idle.max_cstate=0 processor.max_cstate=1 idle=mwait nohpet nosoftlockup isolcpus=2-35,38-71"
+
+    # Tuned profile
+    TunedProfileName: "cpu-partitioning"
+
+    # Isolated pCPU from Kernel, NMI, IRQ, and userland
+    IsolCpusList: "2-35,38-71"
+
+    # Nova pCPU to be used by the vCPU
+    NovaVcpuPinSet: ['4-35','40-71']
+
+    # OVS housekeeper cores
+    OvsDpdkCoreList: "0,1,36,37"
+
+    # CPU Share for the QEMU Emulator Threads
+    NovaComputeCpuSharedSet: "0,1,36,37"
+
+    # OVS-DPDK PMD Threads pCPU
+    OvsPmdCoreList: "2,3,38,39"
+
+    # Reserved memory for the hypervisor   
+    NovaReservedHostMemory: 16384
+
+    # OVS-DPDK DPC config (DPC1 here)
+    OvsDpdkMemoryChannels: "4"
+
+    # OVS-DPDK Memory size for NUMA node    
+    OvsDpdkSocketMemory: "1024,1024"
+#    OvsDpdkSocketMemory: "4096,4096"
+
+    NovaLibvirtRxQueueSize: 1024
+    NovaLibvirtTxQueueSize: 1024
+    
+    # VHU Socket Group
+    VhostuserSocketGroup: "hugetlbfs"
+    
+    NeutronBridgeMappings:
+    - physnet-az1-bare-dpdk:br-dpdkbond0
+    
+    ExtraSysctlSettings:
+      net.netfilter.nf_conntrack_max:
+        value: 1000000
+      net.nf_conntrack_max:
+        value: 1000000
+      net.ipv6.conf.all.disable_ipv6:
+        value: 1
+      kernel.sysrq:
+        value: 1
+   
+    # Neutron Physical mapping between a custom name and physical devices
+    NeutronPhysicalDevMappings:
+        - physnet-az1-sriov1:p7p1
+        - physnet-az1-sriov2:p7p2
+    # Mapping of SR-IOV PF interface to neutron physical_network.
+    NovaPCIPassthrough:
+      - devname: "p7p1"
+        physical_network: "physnet-az1-sriov1"
+      - devname: "p7p2"
+        physical_network: "physnet-az1-sriov2"
+      - vendor_id: "8086"
+        product_id: "158b"
+        address: "0000:86:00.0"
+      - vendor_id: "8086"
+        product_id: "158b"
+        address: "0000:86:00.1"
+      

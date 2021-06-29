@@ -1,0 +1,5 @@
+resource_registry:
+  OS::TripleO::NodeExtraConfigPost: /home/stack/templates/extraconfig/31-tuned.yaml
+
+parameter_defaults:
+  nameserver_ip1: 8.8.8.8

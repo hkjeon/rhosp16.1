@@ -1,0 +1,19 @@
+parameter_defaults:
+  ExtraConfig:
+    tripleo::firewall::firewall_rules:
+      '300 allow Zabbix agent':
+        port: 10050
+        proto: tcp
+        action: accept
+      '301 allow Zabbix agent':
+        port: 10051
+        proto: tcp
+        action: accept
+      '302 allow udagent':
+        port: 2738
+        proto: tcp
+        action: accept
+      '303 allow Zabbix agent':
+        port: 20055
+        proto: tcp
+        action: accept

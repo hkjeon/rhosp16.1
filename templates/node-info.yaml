@@ -1,0 +1,33 @@
+parameter_defaults:
+  OvercloudControllerFlavor: baremetal
+  ControllerCount: 3
+  ControllerSchedulerHints:
+    'capabilities:node': 'controller-%index%'
+# --------------------------------------------------------------- #
+  OvercloudComputeFlavor: baremetal
+  ComputeOvsCount: 3
+  ComputeOvsSchedulerHints:
+    'capabilities:node': 'compute-ovs-%index%'
+# --------------------------------------------------------------- #
+  OvercloudComputeDpdkFlavor: baremetal
+  ComputeDpdkCount: 0
+  ComputeDpdkSchedulerHints:
+    'capabilities:node': 'compute-dpdk-%index%'
+# --------------------------------------------------------------- #
+
+
+
+
+  HostnameMap:
+    overcloud-controller-0: hk-osc-1
+    overcloud-controller-1: hk-osc-2
+    overcloud-controller-2: hk-osc-3
+#-----------------------------------------------------------#
+# Leaf0                                                     #
+#-----------------------------------------------------------#
+    overcloud-compute-ovs-0: hk-comp-1
+    overcloud-compute-ovs-1: hk-comp-2 
+    overcloud-compute-ovs-2: hk-comp-3
+
+    overcloud-compute-dpdk-0: hk-dpdk-1 
+

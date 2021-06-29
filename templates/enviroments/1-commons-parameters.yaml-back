@@ -1,0 +1,29 @@
+parameter_defaults:
+  # TimeZone for the environment
+  TimeZone: "Asia/Seoul"
+
+  # DNS and NTP Server
+  DnsServers: ["8.8.8.8"]
+  NtpServers: ["60.30.157.4"]
+
+  # Public API Domain Name 
+  
+  CloudName: 
+    CloudDomain: skt.com
+    CloudName: overcloud.skt.com
+    CloudNameCtlplane: overcloud.ctlplane.skt.com
+    CloudNameInternal: overcloud.internalapi.skt.com
+    #CloudNameStorage: overcloud.storage.skt.com
+    #CloudNameStorageManagement: overcloud.storagemgmt.skt.com
+
+
+  # Admin Keystone user password
+  AdminPassword: 'core*234'
+
+  # Custom SSH Config to allow password and Root login 
+  SshServerOptions:
+    UseDNS: 'yes'
+    DenyUsers: 'skroot'
+    PasswordAuthentication: 'yes'
+    PermitRootLogin: 'no'
+    PermitEmptyPasswords: 'no'
