@@ -11,19 +11,19 @@ parameter_defaults:
 
   # Config NFS for glance images.
   GlanceNfsEnabled: true
-  GlanceNfsShare: '60.30.157.253:/root/data/nfs/glance-images'
+  GlanceNfsShare: '55.55.157.253:/root/data/nfs/glance-images'
   GlanceNfsOptions: 'rw,sync,context=system_u:object_r:svirt_sandbox_file_t:s0'  
 
 
   # Config NFS for Cinder Volumes.
   CinderEnableNfsBackend: true
   CinderNfsMountOptions: 'nfsvers=3,rw,sync,intr,bg'
-  CinderNfsServers: '60.30.157.253:/root/data/nfs/cinder-volumes'
+  CinderNfsServers: '55.55.157.253:/root/data/nfs/cinder-volumes'
 
   # Config NFS for Cinder Backups
   CinderBackupBackend: nfs
   CinderBackupNfsMountOptions: 'nfsvers=3,rw,sync,intr,bg'
-  CinderBackupNfsShare: '60.30.157.253:/root/data/nfs/cinder-backups'
+  CinderBackupNfsShare: '55.55.157.253:/root/data/nfs/cinder-backups'
 
 
 
