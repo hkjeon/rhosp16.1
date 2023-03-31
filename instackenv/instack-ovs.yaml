@@ -1,6 +1,6 @@
 nodes:
   - "name": "hk-comp-1"
-    "pm_addr": "60.30.157.4"
+    "pm_addr": "55.55.157.4"
     "mac": ["52:54:00:8c:bb:a0"]
     "pm_type": "ipmi"
     "pm_user": "admin"
@@ -12,7 +12,7 @@ nodes:
         }
 
   - "name": "hk-comp-2"
-    "pm_addr": "60.30.157.4"
+    "pm_addr": "55.55.157.4"
     "mac": ["52:54:00:e0:b8:8e"]
     "pm_type": "ipmi"
     "pm_user": "admin"
@@ -24,7 +24,7 @@ nodes:
         }
 
   - "name": "hk-comp-3"
-    "pm_addr": "60.30.157.4"
+    "pm_addr": "55.55.157.4"
     "mac": ["52:54:00:ec:e1:c9"]
     "pm_type": "ipmi"
     "pm_user": "admin"
