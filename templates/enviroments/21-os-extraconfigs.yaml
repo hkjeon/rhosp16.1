@@ -85,4 +85,3 @@ parameter_defaults:
     neutron::agents::dhcp::availability_zone: AZ-0-COMP-OVS
     # ---- Add availability zone Neutron ---- #
     # ------------------------------------------------------- #
-
