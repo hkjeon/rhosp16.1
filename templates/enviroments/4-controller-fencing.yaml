@@ -10,7 +10,7 @@ parameter_defaults:
       params:
         login: admin
         passwd: hpinvent
-        ipaddr: 60.30.157.4
+        ipaddr: 55.55.157.4
         ipport: 6451
         lanplus: true
         pcmk_host_list: hk-osc-1
@@ -22,7 +22,7 @@ parameter_defaults:
       params:
         login: admin
         passwd: hpinvent
-        ipaddr: 60.30.157.4
+        ipaddr: 55.55.157.4
         ipport: 6452
         lanplus: true
         pcmk_host_list: hk-osc-2
@@ -34,7 +34,7 @@ parameter_defaults:
       params:
         login: admin
         passwd: hpinvent
-        ipaddr: 60.30.157.4
+        ipaddr: 55.55.157.4
         ipport: 6453
         lanplus: true
         pcmk_host_list: hk-osc-3
