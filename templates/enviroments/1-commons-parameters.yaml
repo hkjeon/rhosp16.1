@@ -22,7 +22,6 @@ parameter_defaults:
   # Custom SSH Config to allow password and Root login 
   SshServerOptions:
     UseDNS: 'yes'
-    DenyUsers: 'skroot'
     PasswordAuthentication: 'yes'
     PermitRootLogin: 'no'
     PermitEmptyPasswords: 'no'
