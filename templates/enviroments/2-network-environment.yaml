@@ -23,10 +23,10 @@ resource_registry:
 
 parameter_defaults:
   # VIP Address
-  ControlFixedIPs:            [{'ip_address':'60.30.157.180'}]
-  PublicVirtualFixedIPs:      [{'ip_address':'60.30.152.180'}]
-  InternalApiVirtualFixedIPs: [{'ip_address':'60.30.155.180'}]
-  RedisVirtualFixedIPs:       [{'ip_address':'60.30.155.179'}]
+  ControlFixedIPs:            [{'ip_address':'55.55.157.180'}]
+  PublicVirtualFixedIPs:      [{'ip_address':'55.55.152.180'}]
+  InternalApiVirtualFixedIPs: [{'ip_address':'55.55.155.180'}]
+  RedisVirtualFixedIPs:       [{'ip_address':'55.55.155.179'}]
 #-----------------------------------------------------------------------------------#
   ControlPlaneSubnet: AZ-0-OSC-CP0
   ControllerControlPlaneSubnet: AZ-0-OSC-CP0
@@ -35,18 +35,18 @@ parameter_defaults:
 #-----------------------------------------------------------------------------------#
   # Add in configuration for the Control Plane
   ControlPlaneSubnetCidr: "24"
-  ControlPlaneDefaultRoute: 60.30.157.1
-  AZ-0-OSC-CP0EC2MetadataIp: 60.30.157.170
+  ControlPlaneDefaultRoute: 55.55.157.1
+  AZ-0-OSC-CP0EC2MetadataIp: 55.55.157.170
 #-----------------------------------------------------------------------------------#
   # Public Endpoint
-  ExternalNetCidr: 60.30.152.0/24
-  ExternalAllocationPools: [{'start': '60.30.152.181', 'end': '60.30.152.189'}]
+  ExternalNetCidr: 55.55.152.0/24
+  ExternalAllocationPools: [{'start': '55.55.152.181', 'end': '55.55.152.189'}]
   ExternalNetworkVlanID: 202
-  #ExternalInterfaceDefaultRoute: 60.30.152.1
+  #ExternalInterfaceDefaultRoute: 55.55.152.1
 #-----------------------------------------------------------------------------------#
   # admin, internal Endpoint
-  InternalApiNetCidr: 60.30.155.0/24
-  InternalApiAllocationPools: [{'start': '60.30.155.181', 'end': '60.30.155.189'}]
+  InternalApiNetCidr: 55.55.155.0/24
+  InternalApiAllocationPools: [{'start': '55.55.155.181', 'end': '55.55.155.189'}]
   InternalApiNetworkVlanID: 205
 #-----------------------------------------------------------------------------------#
   # To refresh the overcloud nodes network configuration at every Overcloud Update
@@ -57,35 +57,32 @@ parameter_defaults:
   # Static IP for Controller
   ControllerIPs:
     ctlplane:
-    - 60.30.157.181
-    - 60.30.157.182
-    - 60.30.157.183
+    - 55.55.157.181
+    - 55.55.157.182
+    - 55.55.157.183
     external:
-    - 60.30.152.181
-    - 60.30.152.182
-    - 60.30.152.183
+    - 55.55.152.181
+    - 55.55.152.182
+    - 55.55.152.183
     internal_api:
-    - 60.30.155.181
-    - 60.30.155.182
-    - 60.30.155.183
+    - 55.55.155.181
+    - 55.55.155.182
+    - 55.55.155.183
 
   # Static IP for ComputeOvs 
   ComputeOvsIPs:
     ctlplane:
-    - 60.30.157.185
-    - 60.30.157.186
-    - 60.30.157.187
+    - 55.55.157.185
+    - 55.55.157.186
+    - 55.55.157.187
     internal_api:
-    - 60.30.155.185
-    - 60.30.155.186
-    - 60.30.155.187
+    - 55.55.155.185
+    - 55.55.155.186
+    - 55.55.155.187
 
   # Static IP for ComputeDpdk 
   ComputeDpdkIPs:
     ctlplane:
-    - 60.30.157.188
+    - 55.55.157.188
     internal_api:
-    - 60.30.155.188
-
-
-
+    - 55.55.155.188
