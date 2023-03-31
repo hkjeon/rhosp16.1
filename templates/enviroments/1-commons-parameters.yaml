@@ -4,20 +4,20 @@ parameter_defaults:
 
   # DNS and NTP Server
   DnsServers: ["8.8.8.8"]
-  NtpServers: ["60.30.157.4"]
+  NtpServers: ["55.55.157.4"]
 
   # Public API Domain Name 
   
-  CloudDomain: skt.com
-  CloudName: overcloud.skt.com
-  CloudNameCtlplane: overcloud.ctlplane.skt.com
-  CloudNameInternal: overcloud.internalapi.skt.com
-    #CloudNameStorage: overcloud.storage.skt.com
-    #CloudNameStorageManagement: overcloud.storagemgmt.skt.com
+  CloudDomain: hk.com
+  CloudName: overcloud.hk.com
+  CloudNameCtlplane: overcloud.ctlplane.hk.com
+  CloudNameInternal: overcloud.internalapi.hk.com
+    #CloudNameStorage: overcloud.storage.hk.com
+    #CloudNameStorageManagement: overcloud.storagemgmt.hk.com
 
 
   # Admin Keystone user password
-  AdminPassword: 'core*234'
+  AdminPassword: 'test*234'
 
   # Custom SSH Config to allow password and Root login 
   SshServerOptions:
