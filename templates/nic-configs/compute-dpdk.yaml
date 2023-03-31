@@ -62,7 +62,7 @@ resources:
                     get_param: InternalApiIpSubnet
                 routes:
                 - default: true
-                  next_hop: 60.30.155.1    
+                  next_hop: 55.55.155.1    
 #------------------------------------------------------------------------------------#
               - type: ovs_user_bridge
                 name: br-dpdkbond0
