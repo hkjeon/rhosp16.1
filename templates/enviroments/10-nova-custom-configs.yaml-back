@@ -1,6 +1,0 @@
-parameter_defaults:
-  # Nova Scheduler filters
-  NovaSchedulerDefaultFilters: ['RetryFilter','AvailabilityZoneFilter','DiskFilter','RamFilter','CoreFilter','NUMATopologyFilter','ComputeFilter','ComputeCapabilitiesFilter','ImagePropertiesFilter','ServerGroupAntiAffinityFilter','ServerGroupAffinityFilter','PciPassthroughFilter','AggregateCoreFilter','AggregateDiskFilter','AggregateRamFilter','AggregateInstanceExtraSpecsFilter']
-  
-  # Nova Scheduler drivers
-  NovaSchedulerAvailableFilters: ['nova.scheduler.filters.all_filters","nova.scheduler.filters.pci_passthrough_filter.PciPassthroughFilter']
