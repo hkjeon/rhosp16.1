@@ -2,12 +2,12 @@
 - name: InternalApi
   name_lower: internal_api
   vip: true
-  ip_subnet: '60.30.155.0/24'
-  allocation_pools: [{'start': '60.30.155.181', 'end': '60.30.155.189'}]
+  ip_subnet: '55.55.155.0/24'
+  allocation_pools: [{'start': '55.55.155.181', 'end': '55.55.155.189'}]
 # --------------------------------------------------------------- #
 - name: External
   vip: true
   name_lower: external
-  ip_subnet: '60.30.152.0/24'
-  allocation_pools: [{'start': '60.30.152.181', 'end': '60.30.152.189'}]
-  gateway_ip: '60.30.152.1'
+  ip_subnet: '55.55.152.0/24'
+  allocation_pools: [{'start': '55.55.152.181', 'end': '55.55.152.189'}]
+  gateway_ip: '55.55.152.1'
