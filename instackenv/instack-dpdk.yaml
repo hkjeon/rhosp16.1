@@ -1,6 +1,6 @@
 nodes:
   - "name": "hk-dpdk-1"
-    "pm_addr": "60.30.157.4"
+    "pm_addr": "55.55.157.4"
     "mac": ["52:54:00:ce:c2:5f"]
     "pm_type": "ipmi"
     "pm_user": "admin"
